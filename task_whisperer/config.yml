@@ -4,15 +4,19 @@ its_config:
     url:
       label: JIRA URL
       default_value: ""
+      required: true
     username:
       label: JIRA User
       default_value: ""
+      required: true
     password:
       label: JIRA Token
       default_value: ""
       password: true
+      required: true
     projects:
       default_value: ""
+      required: true
     api_options:
       hidden: true
       options:

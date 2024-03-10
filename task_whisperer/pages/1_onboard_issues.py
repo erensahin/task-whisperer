@@ -1,5 +1,8 @@
+from typing import Any, Dict, List, Tuple
+
 import streamlit as st
 
+from task_whisperer import CONFIG
 from task_whisperer.src.streamlit_utils.sidebar import render_sidebar
 from task_whisperer.src.streamlit_utils.onboard import (
     fetch_issues,
@@ -7,6 +10,19 @@ from task_whisperer.src.streamlit_utils.onboard import (
     load_issues,
     load_metadata,
 )
+
+
+def can_fetch(
+    selected_its: str, selected_its_config: Dict[str, Any]
+) -> Tuple[bool, List[str]]:
+    config_template = CONFIG["its_config"][selected_its]
+    required_but_missing = []
+
+    for key, value in config_template.items():
+        if value.get("required") and not selected_its_config.get(key):
+            required_but_missing.append(value.get("label") or key)
+
+    return len(required_but_missing) == 0, required_but_missing
 
 
 st.set_page_config(page_title="Onboarding", page_icon="📈", layout="wide")
@@ -30,20 +46,29 @@ with st.container():
             )
             submitted = st.button("Fetch")
             if submitted:
-                project_names = ",".join(projects)
-                with st.spinner(f"Fetching issues for {project_names}. Please wait..."):
-                    issue_list_by_project = fetch_issues(
-                        its_kind=its_kind,
-                        its_config=its_config,
-                        projects=projects,
-                    )
+                can_fetch_issues, missing_values = can_fetch(its_kind, its_config)
 
-                    info_text = "Obtained issues\n"
-                    for project, issues in issue_list_by_project.items():
-                        info_text += f"{project}: {len(issues)}\n"
+                if can_fetch_issues:
+                    project_names = ",".join(projects)
+                    with st.spinner(
+                        f"Fetching issues for {project_names}. Please wait..."
+                    ):
+                        issue_list_by_project = fetch_issues(
+                            its_kind=its_kind,
+                            its_config=its_config,
+                            projects=projects,
+                        )
 
-                    st.info(info_text)
-                    save_issues(its_kind, issue_list_by_project)
+                        info_text = "Obtained issues\n"
+                        for project, issues in issue_list_by_project.items():
+                            info_text += f"{project}: {len(issues)}\n"
+
+                        st.info(info_text)
+                        save_issues(its_kind, issue_list_by_project)
+                else:
+                    for value in missing_values:
+                        st.warning(f"{value} is required but it is missing!", icon="⚠️")
+
         with col2:
             st.markdown("### Project - Tasks on Internal Datastore")
             project_task_metadata = load_metadata(its_kind)
