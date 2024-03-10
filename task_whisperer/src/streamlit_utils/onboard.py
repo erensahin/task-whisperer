@@ -63,7 +63,7 @@ def save_issues(its_kind: str, issue_list_by_project: Dict[str, List[Dict]]):
         }
 
         if project in meta:
-            meta[project] = {**new_info, **meta[project]}
+            meta[project] = { **meta[project], **new_info}
         else:
             meta[project] = {"_created_at": now_ts, **new_info}
 
