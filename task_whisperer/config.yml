@@ -1,0 +1,15 @@
+datastore_path: internal-data
+its_config:
+  jira:
+    JIRA_URL:
+      label: JIRA URL
+      default_value: ""
+    JIRA_USER:
+      label: JIRA User
+      default_value: ""
+    JIRA_TOKEN:
+      label: JIRA URL
+      default_value: ""
+      password: true
+    JIRA_PROJECTS:
+      default_value: ""
