@@ -8,7 +8,7 @@ ITS_OPTIONS = list(CONFIG["its_config"].keys())
 
 
 def render_sidebar():
-    sidebar_config = {}
+    sidebar_config = {"its_config": {}}
 
     with st.sidebar:
         selected_its = st.selectbox(
@@ -17,12 +17,15 @@ def render_sidebar():
         its_options: Dict[str, Any] = CONFIG["its_config"][selected_its]
 
         for key, options in its_options.items():
-            sidebar_config[key] = st.text_input(
-                label=options.get("label", key),
-                value=options.get("default_value", {}),
-                type="password" if options.get("password") else "default",
-            )
+            if not options.get("hidden"):
+                sidebar_config["its_config"][key] = st.text_input(
+                    label=options.get("label", key),
+                    value=options.get("default_value", {}),
+                    type="password" if options.get("password") else "default",
+                )
+            else:
+                sidebar_config["its_config"][key] = options["options"]
 
-        sidebar_config["selected_its"] = selected_its
+        sidebar_config["its_config"]["selected_its"] = selected_its
 
     return sidebar_config

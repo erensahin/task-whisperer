@@ -1,15 +1,25 @@
 datastore_path: internal-data
 its_config:
   jira:
-    JIRA_URL:
+    url:
       label: JIRA URL
       default_value: ""
-    JIRA_USER:
+    username:
       label: JIRA User
       default_value: ""
-    JIRA_TOKEN:
-      label: JIRA URL
+    password:
+      label: JIRA Token
       default_value: ""
       password: true
-    JIRA_PROJECTS:
+    projects:
       default_value: ""
+    api_options:
+      hidden: true
+      options:
+        limit: 100
+        fields:
+          - summary
+          - description
+          - status
+          - project
+          - issuetype
