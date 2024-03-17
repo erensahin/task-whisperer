@@ -2,12 +2,13 @@ from typing import Any, Dict, List
 
 import streamlit as st
 
-from task_whisperer.src.streamlit_utils.generate_embeddings import (
+from task_whisperer.src.page_helpers.generate_embeddings import (
     create_embeddings,
     save_embeddings_paths,
     load_metadata,
 )
-from task_whisperer.src.streamlit_utils.sidebar import render_sidebar
+from task_whisperer.src.page_helpers.sidebar import render_sidebar
+
 
 def generate_embeddings(
     llm_kind: str, its_kind: str, llm_config: Dict[str, Any], projects: List[str]

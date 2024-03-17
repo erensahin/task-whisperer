@@ -6,7 +6,7 @@ import pandas as pd
 import yaml
 
 from task_whisperer import CONFIG, PROJECT_ROOT
-from task_whisperer.src.streamlit_utils.onboard import load_metadata as load_issues_meta
+from task_whisperer.src.page_helpers.onboard import load_metadata as load_issues_meta
 from task_whisperer.src.embedding import embedding_factory
 
 ISSUES_DATASTORE_PATH = os.path.join(PROJECT_ROOT, CONFIG["datastore_path"], "issues")
