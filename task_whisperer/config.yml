@@ -27,3 +27,16 @@ its_config:
           - status
           - project
           - issuetype
+llm_config:
+  openai:
+    api_key:
+      label: OpenAI API Key
+      default_value: ""
+      password: true
+      required: true
+    embedding_model:
+      label: "Embedding Model"
+      default_value: text-embedding-ada-002
+    llm_model:
+      label: "LLM Model"
+      default_value: gpt-3.5-turbo
