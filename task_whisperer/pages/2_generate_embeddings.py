@@ -7,7 +7,7 @@ from task_whisperer.src.page_helpers.generate_embeddings import (
     save_embeddings_paths,
     load_metadata,
 )
-from task_whisperer.src.page_helpers.sidebar import render_sidebar
+from task_whisperer.src.steamlit_helpers.sidebar import render_sidebar
 
 
 def generate_embeddings(

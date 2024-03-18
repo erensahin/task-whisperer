@@ -3,7 +3,7 @@ from typing import Any, Dict, List
 import streamlit as st
 
 from task_whisperer.src.page_helpers.create_task import create_task_description
-from task_whisperer.src.page_helpers.sidebar import render_sidebar
+from task_whisperer.src.steamlit_helpers.sidebar import render_sidebar
 
 
 def render_task_summary_input():

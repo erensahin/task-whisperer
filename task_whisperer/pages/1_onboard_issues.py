@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Tuple
 import streamlit as st
 
 from task_whisperer import CONFIG
-from task_whisperer.src.page_helpers.sidebar import render_sidebar
+from task_whisperer.src.steamlit_helpers.sidebar import render_sidebar
 from task_whisperer.src.page_helpers.onboard import (
     fetch_issues,
     save_issues,
