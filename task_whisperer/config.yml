@@ -3,23 +3,23 @@ its_config:
   jira:
     url:
       label: JIRA URL
-      value: ""
+      value: ${oc.env:JIRA_URL,""}
       required: true
       is_text_input: true
     username:
       label: JIRA User
-      value: ""
+      value: ${oc.env:JIRA_USER,""}
       required: true
       is_text_input: true
     password:
       label: JIRA Token
-      value: ""
+      value: ${oc.env:JIRA_TOKEN,""}
       password: true
       required: true
       is_text_input: true
     projects:
       label: Projects
-      value: ""
+      value: ${oc.env:JIRA_PROJECTS,""}
       required: true
       is_text_input: true
     api_options:
@@ -36,7 +36,7 @@ llm_config:
   openai:
     api_key:
       label: OpenAI API Key
-      value: ""
+      value: ${oc.env:OPENAI_API_KEY,""}
       password: true
       required: true
       is_text_input: true

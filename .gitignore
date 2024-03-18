@@ -1,4 +1,8 @@
 # Project Specific
+
+# env files
+.env
+
 # internal-data files
 internal-data/
 
