@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Union
 import streamlit as st
 
 from task_whisperer import CONFIG
+from task_whisperer.src.steamlit_helpers.widget import InputWidgetOption
 
 ITS_OPTIONS = list(CONFIG["its_config"].keys())
 LLM_OPTIONS = list(CONFIG["llm_config"].keys())
@@ -51,11 +52,9 @@ def _populate_options(options_dict: Dict[str, Union[Dict, List, str]]) -> Dict:
 
     for key, options in options_dict.items():
         if not options.get("hidden"):
-            option_config[key] = st.text_input(
-                label=options.get("label", key),
-                value=options.get("default_value", {}),
-                type="password" if options.get("password") else "default",
-            )
+            option = InputWidgetOption(**options)
+            option_config[key] = option.render(st)
+
         else:
             option_config[key] = options["options"]
 

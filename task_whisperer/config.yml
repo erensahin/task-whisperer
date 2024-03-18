@@ -3,20 +3,25 @@ its_config:
   jira:
     url:
       label: JIRA URL
-      default_value: ""
+      value: ""
       required: true
+      is_text_input: true
     username:
       label: JIRA User
-      default_value: ""
+      value: ""
       required: true
+      is_text_input: true
     password:
       label: JIRA Token
-      default_value: ""
+      value: ""
       password: true
       required: true
+      is_text_input: true
     projects:
-      default_value: ""
+      label: Projects
+      value: ""
       required: true
+      is_text_input: true
     api_options:
       hidden: true
       options:
@@ -31,12 +36,15 @@ llm_config:
   openai:
     api_key:
       label: OpenAI API Key
-      default_value: ""
+      value: ""
       password: true
       required: true
+      is_text_input: true
     embedding_model:
       label: "Embedding Model"
-      default_value: text-embedding-ada-002
+      value: text-embedding-ada-002
+      is_text_input: true
     llm_model:
       label: "LLM Model"
-      default_value: gpt-3.5-turbo
+      value: gpt-3.5-turbo
+      is_text_input: true
