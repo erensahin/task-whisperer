@@ -37,9 +37,7 @@ class InputWidgetOption:
 
         if isinstance(self.value, list):
             input_value = st_container.selectbox(
-                label=self.label,
-                options=self.value,
-                key=self.label
+                label=self.label, options=self.value, key=self.label
             )
         elif self.is_numeric_input:
             input_value = st_container.number_input(
@@ -48,11 +46,10 @@ class InputWidgetOption:
                 max_value=self.max_value,
                 value=self.value,
                 step=self.step,
-                key=self.label
+                key=self.label,
             )
             input_value = (
-                input_value if self.data_type is None
-                else self.data_type(input_value)
+                input_value if self.data_type is None else self.data_type(input_value)
             )
         elif self.is_text_input:
             input_value = st_container.text_input(
