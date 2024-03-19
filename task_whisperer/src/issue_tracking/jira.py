@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from atlassian import Jira
 
@@ -61,3 +61,20 @@ class JiraClient(BaseITSClient):
 
             formatted_issues.append(formatted_issue)
         return formatted_issues
+
+    def create_issue(self, project: str, summary: str, description: str, extra_fields: Dict[str, Any]) -> Dict:
+        issuetype = extra_fields.pop("issuetype", {"name": "Task"})
+        if isinstance(issuetype, str):
+            issuetype = {"name": issuetype}
+
+        issue = self.jira.issue_create(
+            fields={
+                "project": {"key": project},
+                "summary": summary,
+                "description": description,
+                "issuetype": issuetype,
+                **extra_fields
+            }
+        )
+        # issue = {"id": "...", "key": "project-xxx", "self": "{atlassian_host}/rest/api/2/issue/{id}}
+        return issue

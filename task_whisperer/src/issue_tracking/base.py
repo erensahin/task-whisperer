@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from abc import ABC, abstractmethod
 
@@ -18,4 +18,8 @@ class BaseITSClient(ABC):
 
     @abstractmethod
     def format_issues(self, issues: List[Dict], **kwargs) -> List[Dict]:
+        pass
+
+    @abstractmethod
+    def create_issue(self, project: str, summary: str, description: str, extra_fields: Dict[str, Any]) -> Dict:
         pass
