@@ -1,26 +1,23 @@
-import os
 from typing import Any, Dict
 
-from task_whisperer import PROJECT_ROOT, CONFIG
-from task_whisperer.src.task_generation.factory import task_generator_factory
-
-EMBEDDINGS_ROOT_PATH = os.path.join(
-    PROJECT_ROOT, CONFIG["datastore_path"], "embeddings"
-)
-FAISS_ROOT_PATH = os.path.join(EMBEDDINGS_ROOT_PATH, "faiss")
+from task_whisperer.src.issue_tracking.factory import ITS_factory
 
 
-def create_task_description(
-    llm_kind: str,
-    llm_config: Dict[str, Any],
+def create_task(
+    its_kind: str,
+    its_config: Dict[str, Any],
     task_summary: str,
+    task_description: str,
     project: str,
+    extra_fields: Dict[str, Any] = {},
 ):
-    task_generator_client = task_generator_factory.get(llm_kind)(
-        api_key=llm_config["api_key"],
-        faiss_index_root_path=FAISS_ROOT_PATH,
-        model=llm_config["llm_model"],
-        embedding_model=llm_config["embedding_model"],
+    its_client = ITS_factory.get(its_kind)(
+        url=its_config["url"],
+        username=its_config["username"],
+        password=its_config["password"],
+        its_config=its_config,
     )
-    response = task_generator_client.create_task_description(project, task_summary)
+    response = its_client.create_issue(
+        project, task_summary, task_description, extra_fields
+    )
     return response

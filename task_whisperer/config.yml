@@ -32,6 +32,19 @@ its_config:
           - status
           - project
           - issuetype
+    issue_create_options:
+      hidden: true
+      options:
+        fields:
+          - field_id: issuetype
+            label: Issue Type
+            value:
+                - Task
+                - Bug
+          - field_id: duedate
+            label: due date
+            value: ""
+        custom_fields: ${oc.decode:${oc.env:JIRA_CUSTOM_FIELDS, null}}
 llm_config:
   openai:
     api_key:

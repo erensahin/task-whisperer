@@ -21,5 +21,7 @@ class BaseITSClient(ABC):
         pass
 
     @abstractmethod
-    def create_issue(self, project: str, summary: str, description: str, extra_fields: Dict[str, Any]) -> Dict:
+    def create_issue(
+        self, project: str, summary: str, description: str, extra_fields: Dict[str, Any]
+    ) -> Dict:
         pass
