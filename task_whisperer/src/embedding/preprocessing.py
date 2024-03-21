@@ -7,7 +7,11 @@ VALID_ISSUE_TYPES = ["Task", "Bug"]
 def clean_description(description: str) -> str:
     # remove accountid from text
     cleaned_text = re.sub(r"\[~accountid:[^\]]+\]", "", description)
-    return cleaned_text
+    # remove file attachments [^file.extension]
+    cleaned_text = re.sub(r"\[\^.*?\]", "", description)
+    # remove image attachment !image-xxx.png|width=111,height=111!
+    cleaned_text = re.sub(r"\!image.*?\!", "", description)
+    return cleaned_text.strip()
 
 
 def preprocess_issues(
