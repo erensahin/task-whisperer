@@ -33,7 +33,10 @@ class OpenAITaskGenerator(BaseTaskGenerator):
         self.faiss_index_root_path = faiss_index_root_path
 
     def get_n_tokens(self, query: str) -> int:
-        encoding = tiktoken.encoding_for_model(self.model)
+        try:
+            encoding = tiktoken.encoding_for_model(self.model)
+        except KeyError:
+            encoding = tiktoken.get_encoding("cl100k_base")
         return len(encoding.encode(query))
 
     def read_embeddings(self, project: str):
