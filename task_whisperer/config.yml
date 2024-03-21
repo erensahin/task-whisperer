@@ -55,9 +55,10 @@ llm_config:
       is_text_input: true
     embedding_model:
       label: "Embedding Model"
-      value: text-embedding-ada-002
+      value:
+        - text-embedding-ada-002
       is_text_input: true
     llm_model:
       label: "LLM Model"
-      value: gpt-3.5-turbo
-      is_text_input: true
+      value:
+        - gpt-3.5-turbo
