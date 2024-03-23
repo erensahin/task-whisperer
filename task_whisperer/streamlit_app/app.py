@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     st.subheader("How to Use Task Whisperer?")
     st.markdown("**Simply Navigate the Pages:**")
-    st.page_link("pages/1_onboard_issues.py", label="Fetch Issues", icon="🔍")
+    st.page_link("pages/1_fetch_issues.py", label="Fetch Issues", icon="🔍")
     st.page_link(
         "pages/2_generate_embeddings.py", label="Generate Embeddings", icon="🔢"
     )

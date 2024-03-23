@@ -6,7 +6,7 @@ import pandas as pd
 import yaml
 
 from task_whisperer import CONFIG, PROJECT_ROOT
-from task_whisperer.src.page_helpers.onboard import load_metadata as load_issues_meta
+from task_whisperer.src.page_helpers.issues import IssueService
 from task_whisperer.src.embedding import embedding_factory
 
 ISSUES_DATASTORE_PATH = os.path.join(PROJECT_ROOT, CONFIG["datastore_path"], "issues")
@@ -17,7 +17,8 @@ FAISS_ROOT_PATH = os.path.join(EMBEDDINGS_ROOT_PATH, "faiss")
 
 
 def get_issues_meta(its_kind: str):
-    issues_meta = load_issues_meta(its_kind)
+    issue_service = IssueService(its_config={}, its_kind=its_kind)
+    issues_meta = issue_service.load_metadata()
     issues_meta = {row["project"]: row for row in issues_meta}
     return issues_meta
 
