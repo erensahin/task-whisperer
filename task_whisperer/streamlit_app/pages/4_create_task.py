@@ -8,8 +8,8 @@ from task_whisperer.src.steamlit_helpers.widget import InputWidgetOption
 
 STAGE_NAME = "4_create_task_stage"
 
-class CreateTaskRenderer:
 
+class CreateTaskRenderer:
     def __init__(self, its_config: Dict[str, Any]):
         self.its_config = its_config
         self.its_kind = self.its_config["selected_its"]
@@ -21,7 +21,9 @@ class CreateTaskRenderer:
         task_summary = st.text_area("Task Summary", "")
         return task_summary
 
-    def render_fields_and_custom_fields(self, issue_create_options: Dict[str, Any]) -> Dict[str, Any]:
+    def render_fields_and_custom_fields(
+        self, issue_create_options: Dict[str, Any]
+    ) -> Dict[str, Any]:
         options = {}
         for field_definition in issue_create_options.get("fields", []):
             options[field_definition["field_id"]] = self._render_field(field_definition)
@@ -31,7 +33,9 @@ class CreateTaskRenderer:
 
         return options
 
-    def render_task_creation_layout(self, task_summary: str, task_description: str, project: str) -> Optional[str]:
+    def render_task_creation_layout(
+        self, task_summary: str, task_description: str, project: str
+    ) -> Optional[str]:
         task_id = None
         if st.session_state.get(STAGE_NAME, "") not in ["", "page_initialized"]:
             task_summary = ""
@@ -73,17 +77,21 @@ class CreateTaskRenderer:
         project = st.selectbox("Select Project", self.projects)
         return project
 
-
     def render_task_summary_form(self) -> str:
         task_summary = self.render_task_summary_input()
         submitted = False
         with st.form(f"Create {self.its_kind} Task Description"):
-            submitted = st.form_submit_button(f"Create {self.its_kind} Task Description")
+            submitted = st.form_submit_button(
+                f"Create {self.its_kind} Task Description"
+            )
             if submitted:
                 st.session_state[STAGE_NAME] = "task_creation_submitted"
                 st.session_state["submitted_task_summary"] = task_summary
 
-        if st.session_state[STAGE_NAME] == "task_creation_submitted" and not task_summary:
+        if (
+            st.session_state[STAGE_NAME] == "task_creation_submitted"
+            and not task_summary
+        ):
             st.error("Task Summary cannot be empty.")
             return None
 
@@ -94,7 +102,9 @@ class CreateTaskRenderer:
             st.session_state[STAGE_NAME] = "page_initialized"
 
         task_summary = st.session_state.get("submitted_task_summary", "")
-        task_desription_generated = st.session_state.get("task_description_generated", "")
+        task_desription_generated = st.session_state.get(
+            "task_description_generated", ""
+        )
 
         selected_project = self.render_project_selection()
 
@@ -111,6 +121,7 @@ class CreateTaskRenderer:
             is_text_input=isinstance(default_value, str),
         )
         return widget.render(st)
+
 
 def _refresh_session_stage():
     st.session_state.pop("submitted_task_summary", None)
