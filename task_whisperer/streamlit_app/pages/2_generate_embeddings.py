@@ -26,11 +26,9 @@ def render_embedding_generation_layout(
 ):
     st.markdown("### Click Generate Embeddings button to create embeddings")
     project_names = ",".join(projects)
-    st.markdown(
-        f"Projects: {project_names}. A separate embedding index will be "
-        "created for each project."
-    )
-    submitted = st.button("Generate Embeddings")
+    st.markdown(f"**Projects: {project_names}**")
+    st.markdown("A separate embedding index will be created for each project.")
+    submitted = st.button("Generate Embeddings 🚀", type="primary")
     if submitted:
         if not llm_config["api_key"]:
             st.warning(f"Please enter your {llm_kind} API key to continue.", icon="⚠️")
@@ -44,7 +42,7 @@ def render_embedding_generation_layout(
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="Embeddings", page_icon="📈", layout="wide")
+    st.set_page_config(page_title="Embeddings", page_icon="🔢", layout="wide")
     sidebar_config = render_sidebar()
     st.title("Generate Embeddings From Task Summaries & Descriptions")
 

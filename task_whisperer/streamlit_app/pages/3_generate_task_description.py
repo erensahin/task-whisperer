@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 import streamlit as st
+import streamlit_scrollable_textbox as stx
 
 from task_whisperer.src.steamlit_helpers.sidebar import render_sidebar
 from task_whisperer.src.page_helpers.generate_task_description import (
@@ -44,7 +45,7 @@ def render_task_description_output(
     task_response: Dict[str, Any],
 ):
     with st.container(border=True):
-        col1, col2 = st.columns([2, 1])
+        col1, col2 = st.columns([0.6, 0.4])
         with col1:
             st.markdown(f"#### Task Summary: {task_summary}")
             st.markdown(f"#### Task Description")
@@ -90,7 +91,11 @@ def render_task_summary_form():
         st.session_state[STAGE_NAME] = "task_description_submitted"
         st.session_state["submitted_task_summary"] = task_summary
 
-    st.button("Create Task Description", on_click=_on_create_task_description_click)
+    st.button(
+        "Create Task Description 🚀",
+        on_click=_on_create_task_description_click,
+        type="primary",
+    )
 
     if (
         st.session_state[STAGE_NAME] == "task_description_submitted"
@@ -135,7 +140,9 @@ def render_page_container(llm_config: Dict[str, Any], projects: List[str]):
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="Create Task", page_icon="📈", layout="wide")
+    st.set_page_config(
+        page_title="Generate Task Description", page_icon="🔮", layout="wide"
+    )
     sidebar_config = render_sidebar()
     st.title("Generate Task Description From Summary")
 

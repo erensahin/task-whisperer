@@ -60,7 +60,9 @@ def render_task_creation_layout(
         extra_options = render_fields_and_custom_fields(
             its_config["issue_create_options"]
         )
-        submitted = st.form_submit_button(f"Submit", on_click=_refresh_session_stage)
+        submitted = st.form_submit_button(
+            f"Create Task 🚀", on_click=_refresh_session_stage, type="primary"
+        )
         if submitted:
             with st.spinner("Creating task. Please wait..."):
                 # response = {"key": "1234"}
@@ -123,7 +125,7 @@ def _refresh_session_stage():
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="Create Task", page_icon="📈", layout="wide")
+    st.set_page_config(page_title="Create Task", page_icon="🚀", layout="wide")
     sidebar_config = render_sidebar()
     st.title("Create Task")
 

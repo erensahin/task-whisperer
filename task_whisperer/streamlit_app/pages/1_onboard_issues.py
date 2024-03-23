@@ -32,7 +32,7 @@ def render_project_fetch_container(
         f"When you hit the button, {its_kind} tasks will be fetched "
         f"for the selected projects: {its_config['projects']}"
     )
-    submitted = st.button("Fetch")
+    submitted = st.button("Fetch 🔽", type="primary")
     if not submitted:
         return
 
@@ -47,11 +47,11 @@ def render_project_fetch_container(
                 projects=projects,
             )
 
-            info_text = "Obtained issues\n"
+            info_text = "Obtained issues successfully! 🎉 \n"
             for project, issues in issue_list_by_project.items():
                 info_text += f"{project}: {len(issues)}\n"
 
-            st.info(info_text)
+            st.success(info_text)
             save_issues(its_kind, issue_list_by_project)
     else:
         for value in missing_values:
@@ -76,7 +76,7 @@ def render_issues_dataframe(its_kind: str, projects: List[str]):
 
 
 if __name__ == "__main__":
-    st.set_page_config(page_title="Onboarding", page_icon="📈", layout="wide")
+    st.set_page_config(page_title="Fetch Issues", page_icon="🔍", layout="wide")
     sidebar_config = render_sidebar()
     its_config = sidebar_config["its_config"]
     its_kind = its_config["selected_its"]
