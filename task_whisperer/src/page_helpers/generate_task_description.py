@@ -22,5 +22,10 @@ def create_task_description(
         model=llm_config["llm_model"],
         embedding_model=llm_config["embedding_model"],
     )
-    response = task_generator_client.create_task_description(project, task_summary)
+    response = task_generator_client.create_task_description(
+        project,
+        task_summary,
+        n_similar_tasks=llm_config.get("similar_issues_count", 5),
+        temperature=llm_config.get("llm_temperature", 0),
+    )
     return response

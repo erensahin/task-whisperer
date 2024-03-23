@@ -110,13 +110,19 @@ class OpenAITaskGenerator(BaseTaskGenerator):
         project: str,
         task_summary: str,
         task_desc: str = "",
-        n_similar_tasks: int = 1,
+        n_similar_tasks: int = 5,
         temperature: float = 0,
     ):
         embedder, faiss_db = self.read_embeddings(project)
-        similar_tasks, n_tokens = self.get_similar_queries(
-            faiss_db, embedder, task_summary, task_desc, n_similar_tasks
-        )
+
+        if n_similar_tasks > 0:
+            similar_tasks, n_tokens = self.get_similar_queries(
+                faiss_db, embedder, task_summary, task_desc, n_similar_tasks
+            )
+        else:
+            similar_tasks = []
+            n_tokens = 0
+
         prompt = self.get_user_prompt(task_summary, similar_tasks)
         answer, callback = self.get_answer(prompt, temperature)
 
