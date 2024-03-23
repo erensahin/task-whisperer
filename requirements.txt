@@ -5,5 +5,6 @@ langchain==0.1.10
 langchain_core==0.1.28
 langchain_text_splitters==0.0.1
 langchain_openai==0.0.8
+Jinja2==3.1.2
 omegaconf==2.3.0
 streamlit==1.32.0

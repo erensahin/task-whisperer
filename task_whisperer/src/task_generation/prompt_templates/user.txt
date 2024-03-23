@@ -1,0 +1,9 @@
+{# prompt_templates/user.txt #}
+
+Use the task summary and description pairs below to create a Issue Tracking System task description
+for the subsequent given task summary
+
+{{ similar_tasks }}
+
+Please create a new Issue Tracking System task description from the Summary:
+{{ task_summary }}
