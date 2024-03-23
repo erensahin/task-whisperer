@@ -79,7 +79,7 @@ class IssueService:
         except:
             return pd.DataFrame(columns=[])
 
-    def load_metadata(self) -> List[Dict]:
+    def load_metadata(self, include_path: bool = True) -> List[Dict]:
         try:
             meta_path = os.path.join(DATASTORE_PATH, self.its_kind, "_meta.yml")
 
@@ -102,7 +102,9 @@ class IssueService:
                         "issue_count_after_preprocess": project_meta[
                             "issue_count_after_preprocess"
                         ],
-                        "processed_issues_path": project_meta["processed_issues_path"],
+                        "processed_issues_path": os.path.relpath(
+                            project_meta["processed_issues_path"], PROJECT_ROOT
+                        ),
                     }
                 )
 

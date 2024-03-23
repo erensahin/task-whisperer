@@ -32,7 +32,9 @@ class GenerateEmbeddingsService:
         os.makedirs(FAISS_ROOT_PATH, exist_ok=True)
         issues_meta = self.get_issues_meta()
         project_meta = issues_meta[project]
-        processed_issues_df = pd.read_csv(project_meta["processed_issues_path"])
+        processed_issues_df = pd.read_csv(
+            os.path.join(PROJECT_ROOT, project_meta["processed_issues_path"])
+        )
 
         embedding_client = embedding_factory.get(self.llm_kind)(
             api_key=self.llm_config["api_key"],
@@ -63,7 +65,9 @@ class GenerateEmbeddingsService:
                         "project": project,
                         "created_at": created_at.strftime("%Y-%m-%d %H:%M:%S"),
                         "updated_at": updated_at.strftime("%Y-%m-%d %H:%M:%S"),
-                        "embedding_path": project_meta["embedding_path"],
+                        "embedding_path": os.path.relpath(
+                            project_meta["embedding_path"], PROJECT_ROOT
+                        )
                     }
                 )
 
