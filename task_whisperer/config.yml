@@ -42,7 +42,7 @@ its_config:
                 - Task
                 - Bug
           - field_id: duedate
-            label: due date
+            label: Due Date (YYYY-MM-DD)
             value: ""
         custom_fields: ${oc.decode:${oc.env:JIRA_CUSTOM_FIELDS, null}}
 llm_config:
