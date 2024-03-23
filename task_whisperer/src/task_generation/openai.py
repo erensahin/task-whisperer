@@ -16,9 +16,7 @@ GPT_MODEL = "gpt-3.5-turbo"
 EMBEDDING_MODEL = "text-embedding-ada-002"
 TEMPLATES_PATH = os.path.join(os.path.dirname(__file__), "prompt_templates")
 
-JINJA_ENV = Environment(
-    loader=FileSystemLoader(TEMPLATES_PATH), autoescape=True
-)
+JINJA_ENV = Environment(loader=FileSystemLoader(TEMPLATES_PATH), autoescape=True)
 
 
 class OpenAITaskGenerator(BaseTaskGenerator):
@@ -93,10 +91,7 @@ class OpenAITaskGenerator(BaseTaskGenerator):
         )
         template = JINJA_ENV.get_template("user.txt")
 
-        return template.render(
-            similar_tasks=similar_tasks,
-            task_summary=task_summary
-        )
+        return template.render(similar_tasks=similar_tasks, task_summary=task_summary)
 
     def get_answer(self, prompt, temperature: float = 0):
         chat = ChatOpenAI(
@@ -115,7 +110,7 @@ class OpenAITaskGenerator(BaseTaskGenerator):
         project: str,
         task_summary: str,
         task_desc: str = "",
-        n_similar_tasks: int = 5,
+        n_similar_tasks: int = 1,
         temperature: float = 0,
     ):
         embedder, faiss_db = self.read_embeddings(project)
