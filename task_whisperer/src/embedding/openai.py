@@ -23,6 +23,9 @@ class OpenAIEmbeddingGenerator:
         faiss_index_root_path: str,
         embedding_model: str = EMBEDDING_MODEL,
     ) -> None:
+        assert api_key, "api_key is required"
+        assert faiss_index_root_path, "faiss_index_root_path is required"
+        assert embedding_model, "embedding_model is required"
         self.api_key = api_key
         self.embedding_model = embedding_model
         self.faiss_index_root_path = faiss_index_root_path

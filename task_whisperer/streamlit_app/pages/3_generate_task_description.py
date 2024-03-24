@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 import streamlit as st
 
@@ -17,7 +17,7 @@ class GenerateTaskDescriptionRenderer:
         self.its_kind = self.its_config["selected_its"]
         self.llm_kind = self.llm_config["selected_llm"]
         self.projects = self.its_config["projects"].split(",")
-        self.projects = [p for p in self.projects]
+        self.projects = [p for p in self.projects if p]
 
     def render_task_summary_input(self) -> str:
         st.markdown("### Enter Task Summary")
@@ -70,7 +70,7 @@ class GenerateTaskDescriptionRenderer:
 
         return task_response["answer"]
 
-    def render_task_summary_form(self):
+    def render_task_summary_form(self, project: str) -> Optional[str]:
         task_summary = self.render_task_summary_input()
 
         def _on_create_task_description_click():
@@ -83,12 +83,14 @@ class GenerateTaskDescriptionRenderer:
             type="primary",
         )
 
-        if (
-            st.session_state[STAGE_NAME] == "task_description_submitted"
-            and not task_summary
-        ):
-            st.error("Task Summary cannot be empty.")
-            return None
+        if st.session_state[STAGE_NAME] == "task_description_submitted":
+            if not task_summary:
+                st.warning("Task Summary cannot be empty.", icon="⚠️")
+                return None
+
+            if not project:
+                st.warning("A project should be selected.", icon="⚠️")
+                return None
 
         return task_summary
 
@@ -97,7 +99,7 @@ class GenerateTaskDescriptionRenderer:
             st.session_state[STAGE_NAME] = "task_summary_input"
 
         project = self.render_project_selection()
-        task_summary = self.render_task_summary_form()
+        task_summary = self.render_task_summary_form(project)
         task_desription_generated = None
 
         if not task_summary:

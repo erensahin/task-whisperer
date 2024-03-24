@@ -15,7 +15,7 @@ class GenerateEmbeddingsRenderer:
         self.its_kind = self.its_config["selected_its"]
         self.llm_kind = self.llm_config["selected_llm"]
         self.projects = self.its_config["projects"].split(",")
-        self.projects = [p for p in self.projects]
+        self.projects = [p for p in self.projects if p]
         self.generate_embeddings_service = GenerateEmbeddingsService(
             self.llm_kind, self.its_kind, self.llm_config
         )
@@ -33,7 +33,7 @@ class GenerateEmbeddingsRenderer:
     def render_embedding_generation_layout(self) -> None:
         st.markdown("### Click Generate Embeddings button to create embeddings")
         project_names = ",".join(self.projects)
-        st.markdown(f"**Projects: {project_names}**")
+        st.markdown(f"**Projects:{project_names}**")
         st.markdown("A separate embedding index will be created for each project.")
         submitted = st.button("Generate Embeddings 🚀", type="primary")
         if submitted:
@@ -41,13 +41,20 @@ class GenerateEmbeddingsRenderer:
                 st.warning(
                     f"Please enter your {self.llm_kind} API key to continue.", icon="⚠️"
                 )
+                return
+
+            if not self.projects:
+                st.warning(f"'Projects' is required but it is missing!", icon="⚠️")
+                return
             else:
-                with st.spinner(
-                    f"Generating {self.llm_kind} embeddings for {project_names}. "
-                    "Please wait..."
-                ):
-                    self.generate_embeddings()
-                    st.success("Embeddings generated successfully! 🎉")
+                st.write(self.projects)
+
+            with st.spinner(
+                f"Generating {self.llm_kind} embeddings for {project_names}. "
+                "Please wait..."
+            ):
+                self.generate_embeddings()
+                st.success("Embeddings generated successfully! 🎉")
 
     def render_page_container(self) -> None:
         with st.container(border=True):

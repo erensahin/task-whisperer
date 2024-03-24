@@ -67,7 +67,7 @@ class GenerateEmbeddingsService:
                         "updated_at": updated_at.strftime("%Y-%m-%d %H:%M:%S"),
                         "embedding_path": os.path.relpath(
                             project_meta["embedding_path"], PROJECT_ROOT
-                        )
+                        ),
                     }
                 )
 

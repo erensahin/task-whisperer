@@ -8,9 +8,20 @@ from task_whisperer.src.issue_tracking.base import BaseITSClient
 class JiraClient(BaseITSClient):
     """JiraClient"""
 
+    DEFAULT_FIELDS = [
+        "summary",
+        "description",
+        "status",
+        "project",
+        "issuetype",
+    ]
+
     def __init__(
         self, url: str, username: str, password: str, its_config: Dict, **kwargs
     ) -> None:
+        assert url, "Jira URL is required"
+        assert username, "Jira username is required"
+        assert password, "Jira password is required"
         self.jira = Jira(
             url=url,
             username=username,
@@ -18,8 +29,10 @@ class JiraClient(BaseITSClient):
             cloud=its_config.get("cloud", True),
         )
         self.its_config = its_config
-        self.issue_fields = self.its_config["api_options"]["fields"]
-        self.api_limit = self.its_config["api_options"]["limit"]
+        self.issue_fields = self.its_config.get("api_options", {}).get(
+            "fields", self.DEFAULT_FIELDS
+        )
+        self.api_limit = self.its_config.get("api_options", {}).get("limit", 100)
 
     def _get_issues_with_jql(self, project: str, start: int = 0) -> Dict:
         issues = self.jira.jql(

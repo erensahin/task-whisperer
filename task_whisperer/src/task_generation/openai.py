@@ -31,6 +31,10 @@ class OpenAITaskGenerator(BaseTaskGenerator):
         model: str = GPT_MODEL,
         embedding_model: str = EMBEDDING_MODEL,
     ) -> None:
+        assert api_key, "api_key is required"
+        assert faiss_index_root_path, "faiss_index_root_path is required"
+        assert model, "model is required"
+        assert embedding_model, "embedding_model is required"
         self.api_key = api_key
         self.model = model
         self.embedding_model = embedding_model

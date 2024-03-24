@@ -12,7 +12,7 @@ class IssueFetchRenderer:
         self.its_config = its_config
         self.its_kind = self.its_config["selected_its"]
         self.projects = self.its_config["projects"].split(",")
-        self.projects = [p for p in self.projects]
+        self.projects = [p for p in self.projects if p]
         self.issue_service = IssueService(self.its_config, self.its_kind)
 
     def can_fetch(self) -> Tuple[bool, List[str]]:
@@ -50,7 +50,7 @@ class IssueFetchRenderer:
                 self.issue_service.save_issues(issue_list_by_project)
         else:
             for value in missing_values:
-                st.warning(f"{value} is required but it is missing!", icon="⚠️")
+                st.warning(f"'{value}' is required but it is missing!", icon="⚠️")
 
     def render_project_task_metadata_table(self) -> None:
         st.markdown("### Project - Tasks on Internal Datastore")
