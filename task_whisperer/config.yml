@@ -18,7 +18,7 @@ its_config:
       required: true
       is_text_input: true
     projects:
-      label: Projects
+      label: Projects (comma separated for multiple projects)
       value: ${oc.env:JIRA_PROJECTS,""}
       required: true
       is_text_input: true
