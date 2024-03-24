@@ -5,7 +5,7 @@ import pandas as pd
 from langchain_core.documents import Document
 from langchain_text_splitters import CharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import FAISS
+from langchain_community.vectorstores.faiss import FAISS
 from langchain_community.callbacks import get_openai_callback
 
 
