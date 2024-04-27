@@ -2,7 +2,7 @@
 
 Welcome to Task Whisperer: Your Ultimate Task Description Assistant!
 
-## Why Task Whisperer?
+## Why Task Whisperer?
 
 TaskWhisperer is your one-stop solution for crafting detailed and precise task
 descriptions with ease. Say goodbye to tedious manual task creation and hello
@@ -17,11 +17,27 @@ to streamlined workflows and increased productivity!
 
 ## How to Use Task Whisperer
 
-### Running Locally
+### Running Locally
 
-#### Using Docker (Recommended)
+#### Using Docker Compose (Recommended)
 
-It is strongly advised to use docker for running task whisperer locally.
+It is strongly advised to use docker compose as it streamlines the development
+and deployment experience.
+
+Firstly, build the docker image:
+
+``docker compose build``
+
+Then, start the application:
+
+``docker compose up``
+
+You can use the app by navigating to ``localhost:8501`` in your browser.
+
+#### Using Docker
+
+If you prefer to build your image yourself, you can directly use docker build & run
+to run the application.
 
 Firstly, build the docker image:
 
@@ -32,6 +48,7 @@ Then, run the container:
 ``docker run task_whisperer``
 
 You can use the app by navigating to ``localhost:8501`` in your browser.
+
 
 #### Using Local Development Environment
 
@@ -53,7 +70,7 @@ Activate the virual environment (On Windows)
 
 Install the requirements:
 
-``uv pip install -r requirements.txt```
+``uv pip install -r requirements.txt``
 
 ##### Create a virtual environment using Python's venv
 
