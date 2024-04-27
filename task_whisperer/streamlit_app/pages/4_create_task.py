@@ -74,12 +74,9 @@ class CreateTaskRenderer:
 
             can_submit, missing_values = self.can_submit(task_summary, task_description, extra_options)
 
-            submitted = st.form_submit_button(
-                f"Create Task 🚀", on_click=_refresh_session_stage, type="primary",
-            )
-
-        if not submitted:
-            return task_id
+            submitted = st.form_submit_button(f"Create Task 🚀", type="primary")
+            if not submitted:
+                return task_id
 
         if can_submit:
             with st.spinner("Creating task. Please wait..."):
@@ -94,6 +91,7 @@ class CreateTaskRenderer:
                 )
                 task_id = response["key"]
                 st.success(f"Task created successfully. Task ID: {response['key']}")
+            _refresh_session_stage()
         else:
             for value in missing_values:
                 st.warning(f"'{value}' is required but it is missing!", icon="⚠️")
