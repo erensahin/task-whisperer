@@ -17,6 +17,8 @@ ENV VIRTUAL_ENV="/home/appuser/venv"
 ENV PATH="${PATH}:/home/appuser"
 ENV PATH="${PATH}:/home/appuser/.local/bin"
 ENV PATH="${PATH}:/home/appuser/venv/bin"
+ENV PYTHONPATH="${PYTHONPATH}:/home/appuser/task_whisperer"
+
 
 COPY requirements.txt requirements.txt
 RUN python -m pip install uv && uv venv /home/appuser/venv
