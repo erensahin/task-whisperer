@@ -46,8 +46,6 @@ class GenerateEmbeddingsRenderer:
             if not self.projects:
                 st.warning(f"'Projects' is required but it is missing!", icon="⚠️")
                 return
-            else:
-                st.write(self.projects)
 
             with st.spinner(
                 f"Generating {self.llm_kind} embeddings for {project_names}. "
