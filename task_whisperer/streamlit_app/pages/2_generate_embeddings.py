@@ -33,7 +33,7 @@ class GenerateEmbeddingsRenderer:
     def render_embedding_generation_layout(self) -> None:
         st.markdown("### Click Generate Embeddings button to create embeddings")
         project_names = ",".join(self.projects)
-        st.markdown(f"**Projects:{project_names}**")
+        st.markdown(f"**Projects: {project_names}**")
         st.markdown("A separate embedding index will be created for each project.")
         submitted = st.button("Generate Embeddings 🚀", type="primary")
         if submitted:
