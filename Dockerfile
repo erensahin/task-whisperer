@@ -23,10 +23,9 @@ RUN python -m pip install uv && uv venv /home/appuser/venv
 RUN uv pip install -r requirements.txt
 
 COPY task_whisperer /home/appuser/task_whisperer
-COPY run.sh /home/appuser
 
 EXPOSE 8501
 
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-ENTRYPOINT ["sh", "/home/appuser/run.sh"]
+ENTRYPOINT ["streamlit", "run", "/home/appuser/task_whisperer/streamlit_app/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
