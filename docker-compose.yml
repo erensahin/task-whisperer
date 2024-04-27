@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  streamlit_app:
+    image: task_whisperer:latest
+    build: .
+    env_file:
+      - .env
+    ports:
+      - 8501:8501
+    command: streamlit run home/appuser/task_whisperer/streamlit_app/app.py --server.port 8501 --server.address=0.0.0.0
+
