@@ -98,7 +98,6 @@ class IssueFetchRenderer:
                     st.warning("Please upload a CSV file.")
 
 
-
 if __name__ == "__main__":
     st.set_page_config(page_title="Fetch Issues", page_icon="🔍", layout="wide")
     sidebar_config = render_sidebar()

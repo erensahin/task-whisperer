@@ -17,8 +17,10 @@ class CreateTaskRenderer:
         self.projects = self.its_config["projects"].split(",")
         self.projects = [p for p in self.projects if p]
 
-    def can_submit(self, task_summary: str, task_description: str, extra_options: Dict[str, Any]) -> Tuple[bool, List[str]]:
-        # construct from config template for its configuration
+    def can_submit(
+        self, task_summary: str, task_description: str, extra_options: Dict[str, Any]
+    ) -> Tuple[bool, List[str]]:
+        # construct from config template for its configuration
         config_template = CONFIG["its_config"][self.its_kind]
         required_but_missing = []
 
@@ -72,7 +74,9 @@ class CreateTaskRenderer:
                 self.its_config["issue_create_options"]
             )
 
-            can_submit, missing_values = self.can_submit(task_summary, task_description, extra_options)
+            can_submit, missing_values = self.can_submit(
+                task_summary, task_description, extra_options
+            )
 
             submitted = st.form_submit_button(f"Create Task 🚀", type="primary")
             if not submitted:

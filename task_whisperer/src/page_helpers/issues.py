@@ -7,7 +7,9 @@ import yaml
 
 from task_whisperer import CONFIG, PROJECT_ROOT
 from task_whisperer.src.issue_tracking import (
-    BaseITSClient, ITS_factory, MANDATORY_FIELDS
+    BaseITSClient,
+    ITS_factory,
+    MANDATORY_FIELDS,
 )
 from task_whisperer.src.embedding.preprocessing import preprocess_issues
 
@@ -116,8 +118,11 @@ class IssueService:
 
     def upload_issues(self, project: str, uploaded_file: Any):
         import pandas as pd
+
         df = pd.read_csv(uploaded_file)
-        assert set(MANDATORY_FIELDS).issubset(df.columns), f"Missing mandatory fields: {MANDATORY_FIELDS}"
+        assert set(MANDATORY_FIELDS).issubset(
+            df.columns
+        ), f"Missing mandatory fields: {MANDATORY_FIELDS}"
 
         its_kind_root_path = os.path.join(DATASTORE_PATH, self.its_kind)
         os.makedirs(its_kind_root_path, exist_ok=True)
