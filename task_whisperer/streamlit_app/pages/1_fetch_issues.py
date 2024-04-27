@@ -67,6 +67,37 @@ class IssueFetchRenderer:
         issues = self.issue_service.load_issues(selected_project)
         st.dataframe(issues)
 
+    def render_page_container(self):
+        tab1_fetch, tab2_upload = st.tabs(["Fetch Issues", "Upload Issues"])
+        with tab1_fetch:
+            st.title("Fetch Issue Information")
+            with st.container(border=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    renderer.render_project_fetch_container()
+
+                with col2:
+                    renderer.render_project_task_metadata_table()
+
+            renderer.render_issues_dataframe()
+
+        with tab2_upload:
+            st.title("Upload Issue Information")
+            # enter project key
+            project_key = st.text_input("Project Key")
+            uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+            submitted = st.button("Upload Issues 🔼", type="primary")
+            if submitted and project_key and uploaded_file:
+                self.issue_service.upload_issues(project_key, uploaded_file)
+                st.success("Issues uploaded successfully! 🎉")
+                # st.rerun()
+            elif submitted:
+                if not project_key:
+                    st.warning("Please enter the project key.")
+                if not uploaded_file:
+                    st.warning("Please upload a CSV file.")
+
+
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Fetch Issues", page_icon="🔍", layout="wide")
@@ -74,15 +105,4 @@ if __name__ == "__main__":
     its_config = sidebar_config["its_config"]
 
     renderer = IssueFetchRenderer(its_config)
-
-    st.title("Fetch Task Information")
-
-    with st.container(border=True):
-        col1, col2 = st.columns(2)
-        with col1:
-            renderer.render_project_fetch_container()
-
-        with col2:
-            renderer.render_project_task_metadata_table()
-
-    renderer.render_issues_dataframe()
+    renderer.render_page_container()

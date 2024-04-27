@@ -6,7 +6,9 @@ import pandas as pd
 import yaml
 
 from task_whisperer import CONFIG, PROJECT_ROOT
-from task_whisperer.src.issue_tracking import BaseITSClient, ITS_factory
+from task_whisperer.src.issue_tracking import (
+    BaseITSClient, ITS_factory, MANDATORY_FIELDS
+)
 from task_whisperer.src.embedding.preprocessing import preprocess_issues
 
 DATASTORE_PATH = os.path.join(PROJECT_ROOT, CONFIG["datastore_path"], "issues")
@@ -111,6 +113,43 @@ class IssueService:
             return meta_prepared
         except:
             return None
+
+    def upload_issues(self, project: str, uploaded_file: Any):
+        import pandas as pd
+        df = pd.read_csv(uploaded_file)
+        assert set(MANDATORY_FIELDS).issubset(df.columns), f"Missing mandatory fields: {MANDATORY_FIELDS}"
+
+        its_kind_root_path = os.path.join(DATASTORE_PATH, self.its_kind)
+        os.makedirs(its_kind_root_path, exist_ok=True)
+        meta_path = os.path.join(its_kind_root_path, "_meta.yml")
+
+        issues_path = os.path.join(
+            DATASTORE_PATH, self.its_kind, f"{project}_issues.csv"
+        )
+        df.to_csv(issues_path, index=False)
+
+        issues_processed_path = os.path.join(
+            its_kind_root_path, f"{project}_issues_processed.csv"
+        )
+        df_processed = preprocess_issues(df)
+        df_processed.to_csv(issues_processed_path, index=False)
+
+        meta = self._read_metadata(meta_path)
+
+        now_ts = datetime.now().timestamp()
+        new_info = {
+            "_updated_at": now_ts,
+            "issue_count": len(df),
+            "issue_count_after_preprocess": len(df_processed),
+            "processed_issues_path": issues_processed_path,
+        }
+
+        if project in meta:
+            meta[project] = {**meta[project], **new_info}
+        else:
+            meta[project] = {"_created_at": now_ts, **new_info}
+
+        self._write_metadata(meta, meta_path)
 
     @staticmethod
     def _read_metadata(meta_path: str) -> Dict[str, Any]:
