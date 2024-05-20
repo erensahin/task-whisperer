@@ -10,14 +10,16 @@ import pandas as pd
 class BaseEmbeddings(ABC):
     """BaseEmbeddings"""
 
-    @abstractmethod
     def __init__(
         self,
         api_key: str,
         faiss_index_root_path: str,
         embedding_model: str,
     ) -> None:
-        pass
+        self.embedder = None
+        self.api_key = api_key
+        self.embedding_model = embedding_model
+        self.faiss_index_root_path = faiss_index_root_path
 
     @abstractmethod
     def load_documents(
@@ -50,4 +52,8 @@ class BaseEmbeddings(ABC):
         summary_col_name: str = "summary",
         description_col_name: str = "description_cleaned",
     ) -> Tuple[str, Any]:
+        pass
+
+    @abstractmethod
+    def embed_query(self, query: str) -> List[float]:
         pass

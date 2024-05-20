@@ -1,15 +1,14 @@
 import os
-from typing import List, Tuple
+from typing import List
 
 from jinja2 import Environment, FileSystemLoader
 
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_community.vectorstores import FAISS
 from langchain_community.callbacks import get_openai_callback
-import tiktoken
 
 from task_whisperer.src.task_generation.base import BaseTaskGenerator
+from task_whisperer.src.vector_store.base import BaseVectorStore
 
 
 GPT_MODEL = "gpt-3.5-turbo"
@@ -27,63 +26,14 @@ class OpenAITaskGenerator(BaseTaskGenerator):
     def __init__(
         self,
         api_key: str,
-        faiss_index_root_path: str,
+        vector_store: BaseVectorStore,
         model: str = GPT_MODEL,
-        embedding_model: str = EMBEDDING_MODEL,
     ) -> None:
         assert api_key, "api_key is required"
-        assert faiss_index_root_path, "faiss_index_root_path is required"
         assert model, "model is required"
-        assert embedding_model, "embedding_model is required"
         self.api_key = api_key
         self.model = model
-        self.embedding_model = embedding_model
-        self.faiss_index_root_path = faiss_index_root_path
-
-    def get_n_tokens(self, query: str) -> int:
-        try:
-            encoding = tiktoken.encoding_for_model(self.model)
-        except KeyError:
-            encoding = tiktoken.get_encoding("cl100k_base")
-        return len(encoding.encode(query))
-
-    def read_embeddings(self, project: str):
-        embedding_path = os.path.join(
-            self.faiss_index_root_path,
-            self.kind,
-            f"faiss_index_{project}_{self.embedding_model}",
-        )
-
-        embedder = OpenAIEmbeddings(api_key=self.api_key, model=self.embedding_model)
-        faiss_db = FAISS.load_local(embedding_path, embedder)
-        return embedder, faiss_db
-
-    def get_task_embedding(
-        self, embedder: OpenAIEmbeddings, task_summary: str, task_desc: str = ""
-    ) -> Tuple[List[float], int]:
-        task_def = f"Summary: {task_summary}\nDescription: {task_desc}"
-        n_tokens = self.get_n_tokens(task_def)
-        embedded = embedder.embed_query(task_def)
-        return embedded, n_tokens
-
-    def get_similar_queries(
-        self,
-        faiss_db,
-        embedder: OpenAIEmbeddings,
-        task_summary: str,
-        task_desc: str = "",
-        n_similar: int = 5,
-    ):
-        task_embed, n_tokens = self.get_task_embedding(
-            embedder, task_summary, task_desc
-        )
-        similar_questions = faiss_db.similarity_search_by_vector(
-            task_embed, k=n_similar
-        )
-        similar_questions = [
-            similar_question.page_content for similar_question in similar_questions
-        ]
-        return similar_questions, n_tokens
+        self.vector_store = vector_store
 
     def get_system_prompt(self):
         with open(os.path.join(TEMPLATES_PATH, "system.txt"), "r") as f:
@@ -117,11 +67,9 @@ class OpenAITaskGenerator(BaseTaskGenerator):
         n_similar_tasks: int = 5,
         temperature: float = 0,
     ):
-        embedder, faiss_db = self.read_embeddings(project)
-
         if n_similar_tasks > 0:
-            similar_tasks, n_tokens = self.get_similar_queries(
-                faiss_db, embedder, task_summary, task_desc, n_similar_tasks
+            similar_tasks, n_tokens = self.vector_store.similarity_search(
+                project, task_summary, task_desc, n_similar=n_similar_tasks
             )
         else:
             similar_tasks = []

@@ -42,13 +42,9 @@ class GenerateEmbeddingsService:
             embedding_model=self.llm_config["embedding_model"],
         )
 
-        embedding_path, embedding_cb = embedding_client.generate_embeddings(
+        embedding_path = embedding_client.generate_embeddings(
             project, processed_issues_df
         )
-
-        # TODO: use a logger here
-        print(embedding_cb)
-
         return embedding_path
 
     def load_metadata(self) -> Optional[List[Dict]]:
